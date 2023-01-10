@@ -12,7 +12,6 @@ using namespace Elite;
 App_InfluenceMap::~App_InfluenceMap()
 {
 	SAFE_DELETE(m_pInfluenceGrid);
-	SAFE_DELETE(m_pInfluenceGraph2D);
 
 	SAFE_DELETE(m_pInfluenceChasing);
 }
@@ -20,12 +19,12 @@ App_InfluenceMap::~App_InfluenceMap()
 //Functions
 void App_InfluenceMap::Start()
 {
-	const float cellSize{ 5.f };
-	const float cellAmount{ 25.f };
+	const int cellSize{ 5 };
+	const int cellAmount{ 25 };
 
 	std::vector<Elite::Vector2> worldMaxima{};
 	worldMaxima.push_back(Elite::Vector2{ 0.f,0.f });
-	worldMaxima.push_back(Elite::Vector2{ cellSize * cellAmount,cellSize * cellAmount });
+	worldMaxima.push_back(Elite::Vector2{ static_cast<float>(cellSize) * cellAmount,static_cast<float>(cellSize) * cellAmount });
 
 	//Initialization of your application. If you want access to the physics world you will need to store it yourself.
 	//----------- CAMERA ------------
@@ -37,45 +36,31 @@ void App_InfluenceMap::Start()
 	m_pInfluenceGrid->InitializeGrid(cellAmount, cellAmount, cellSize, false, true);
 	m_pInfluenceGrid->InitializeBuffer();
 
-	m_pInfluenceGraph2D = new InfluenceMap<InfluenceGraph>(false);
-	m_pInfluenceGraph2D->InitializeBuffer();
-
 	m_GraphRenderer.SetNumberPrintPrecision(0);
 
 	// Own Stuff
 	// =========
 
-	m_pInfluenceChasing = new InfluenceChasing(m_pInfluenceGrid, worldMaxima);
+	m_pInfluenceChasing = new InfluenceChasing(m_pInfluenceGrid, worldMaxima, cellAmount, cellSize, false, true);
 }
 
 void App_InfluenceMap::Update(float deltaTime)
 {
 	if (m_EditGraphEnabled)
 	{
-		if (m_UseWaypointGraph)
+		// If Graph has changed
+		if (m_GridEditor.UpdateGraph(m_pInfluenceGrid))
 		{
-			m_WaypointGraphEditor.UpdateGraph(m_pInfluenceGraph2D);
-			m_pInfluenceGraph2D->SetConnectionCostsToDistance();
-		}
-		else
-		{
-			// If Graph has changed
-			if (m_GridEditor.UpdateGraph(m_pInfluenceGrid))
-			{
-				// Don't change Color from changed Node
-				auto blockedNodes{ m_pInfluenceChasing->UpdateGraphNodes() };
-				m_pInfluenceGrid->SetBlockedNodes(blockedNodes);
-			}
+			// Don't change Color from changed Node
+			auto blockedNodes{ m_pInfluenceChasing->UpdateGraphNodes(m_GridEditor) };
+			m_pInfluenceGrid->SetBlockedNodes(blockedNodes);
 		}
 	}
 	else
 	{
+		m_pInfluenceChasing->SetRenderAgents(m_RenderAgents);
 		m_pInfluenceChasing->Update(deltaTime);
 	}
-
-	m_pInfluenceGraph2D->PropagateInfluence(deltaTime);
-	m_pInfluenceGrid->PropagateInfluence(deltaTime);
-
 
 	UpdateUI();
 }
@@ -118,28 +103,30 @@ void App_InfluenceMap::UpdateUI()
 	ImGui::Spacing();
 	ImGui::Spacing();
 
-	////Get influence map data
-	ImGui::Checkbox("Use waypoint graph", &m_UseWaypointGraph);
+	
 	ImGui::Checkbox("Enable graph editing", &m_EditGraphEnabled);
 	ImGui::Checkbox("Render as graph", &m_RenderAsGraph);
+	ImGui::Checkbox("Render agents", &m_RenderAgents);
 
-	auto momentum = m_pInfluenceGrid->GetMomentum();
-	auto decay = m_pInfluenceGrid->GetDecay();
-	auto propagationInterval = m_pInfluenceGrid->GetPropagationInterval();
+	//Get influence map data
+	auto maxHeat = m_pInfluenceChasing->GetMaxHeat();
+	auto maxAmountOfHeatedCells = m_pInfluenceChasing->GetMaxAmountOfHeatedCells();
+	auto maxPropagationSteps = m_pInfluenceChasing->GetMaxPropagationSteps();
+	auto propagationInterval = m_pInfluenceChasing->GetPropagationInterval();
 
-	ImGui::SliderFloat("Momentum", &momentum, 0.0f, 1.f, "%.2");
-	ImGui::SliderFloat("Decay", &decay, 0.f, 1.f, "%.2");
+	auto startHeat{ maxHeat };
+
+	ImGui::SliderFloat("Max Heat", &maxHeat, 0.f, 1.f, "%.2");
+	ImGui::SliderFloat("Max amount of heated Cells", &maxAmountOfHeatedCells, 0.0f, 1.f, "%.2");
+	ImGui::SliderFloat("Max Propagation steps", &maxPropagationSteps, 0.f, 1.f, "%.2");
 	ImGui::SliderFloat("Propagation Interval", &propagationInterval, 0.f, 2.f, "%.2");
 	ImGui::Spacing();
 
 	//Set data
-	m_pInfluenceGrid->SetMomentum(momentum);
-	m_pInfluenceGrid->SetDecay(decay);
-	m_pInfluenceGrid->SetPropagationInterval(propagationInterval);
-
-	m_pInfluenceGraph2D->SetMomentum(momentum);
-	m_pInfluenceGraph2D->SetDecay(decay);
-	m_pInfluenceGraph2D->SetPropagationInterval(propagationInterval);
+	m_pInfluenceChasing->SetMaxHeat(maxHeat);
+	m_pInfluenceChasing->SetMaxAmountOfHeatedCells(maxAmountOfHeatedCells);
+	m_pInfluenceChasing->SetMaxPropagationSteps(maxPropagationSteps);
+	m_pInfluenceChasing->SetPropagationInterval(propagationInterval);
 
 	//End
 	ImGui::PopAllowKeyboardFocus();
@@ -148,22 +135,7 @@ void App_InfluenceMap::UpdateUI()
 
 void App_InfluenceMap::Render(float deltaTime) const
 {
+	m_pInfluenceChasing->SetRenderAsGraph(m_RenderAsGraph);
 
-	if (m_UseWaypointGraph)
-	{
-		m_pInfluenceGraph2D->SetNodeColorsBasedOnInfluence();
-		m_GraphRenderer.RenderGraph(m_pInfluenceGraph2D, true, true);
-	}
-	else
-	{
-		m_pInfluenceGrid->SetNodeColorsBasedOnInfluence();
-
-		if (m_RenderAsGraph)
-			m_GraphRenderer.RenderGraph(m_pInfluenceGrid,true, true);
-		else
-			m_GraphRenderer.RenderGraph(m_pInfluenceGrid, true, false, false, true);
-
-		m_pInfluenceChasing->Render(deltaTime);
-	}
-
+	m_pInfluenceChasing->Render(deltaTime);
 }

@@ -37,21 +37,20 @@ public:
 	void Render(float deltaTime) const override;
 
 	using InfluenceGrid = Elite::GridGraph<Elite::InfluenceNode, Elite::GraphConnection>;
-	using InfluenceGraph = Elite::Graph2D<Elite::InfluenceNode, Elite::GraphConnection2D>;
 
 private:
 	Elite::InfluenceMap<InfluenceGrid>* m_pInfluenceGrid = nullptr;
-	Elite::GraphEditor m_WaypointGraphEditor{};
-	Elite::InfluenceMap<InfluenceGraph>* m_pInfluenceGraph2D = nullptr;
 	Elite::GraphEditor m_GridEditor{};
 	Elite::GraphRenderer m_GraphRenderer{};
 
-	bool m_UseWaypointGraph = false;
 	bool m_EditGraphEnabled = false;
 	bool m_RenderAsGraph = false;
 
 	// Own Stuff
 	InfluenceChasing* m_pInfluenceChasing{ nullptr };
+
+	bool m_RenderAgents{ true };
+
 private:
 	//C++ make the class non-copyable
 	App_InfluenceMap(const App_InfluenceMap&) = delete;

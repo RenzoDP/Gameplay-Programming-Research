@@ -13,7 +13,7 @@ App_AgarioGame_Influence::App_AgarioGame_Influence()
 	const int nrOfCols{ 15 };
 
 	m_pInfluenceGrid = new InfluenceMap<InfluenceGrid>(false);
-	m_pInfluenceGrid->InitializeGrid(nrOfCols, nrOfCols, m_TrimWorldSize / nrOfCols, false, true);
+	m_pInfluenceGrid->InitializeGrid(nrOfCols, nrOfCols, int(m_TrimWorldSize / nrOfCols), false, true);
 	m_pInfluenceGrid->InitializeBuffer();
 
 	m_GraphRenderer.SetNumberPrintPrecision(0);
