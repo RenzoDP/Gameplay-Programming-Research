@@ -45,9 +45,13 @@ void AgentManager::Render(float deltaTime)
 	m_pGuardAgent->Render(deltaTime);
 }
 
-void AgentManager::SetTarget(const Elite::Vector2& newTarget)
+void AgentManager::SetPlayerTarget(const Elite::Vector2& newTarget)
 {
 	m_PlayerTarget = newTarget;
+}
+void AgentManager::SetGuardTarget(const Elite::Vector2& newTarget)
+{
+	m_GuardTarget = newTarget;
 }
 
 bool AgentManager::GetHasLostPlayer() const
@@ -107,11 +111,12 @@ void AgentManager::InitializeAgents()
 	const float guardRotation{ m_pGuardAgent->GetRotation() };
 	const Elite::Vector2 guardLookingVector{ std::cosf(guardRotation),std::sinf(guardRotation) };
 
-	Elite::Vector2 leftConePointAdjustments{ -7.5f, 15.f };
-	m_ConeLength = leftConePointAdjustments.Magnitude();
+	const float adjustedFOV{ m_FOV / 10.f };
+
+	Elite::Vector2 leftConePointAdjustments{ -adjustedFOV, 10.f };
 	leftConePointAdjustments.Normalize();
 
-	Elite::Vector2 rightConePointAdjustments{ 7.5f, 15.f };
+	Elite::Vector2 rightConePointAdjustments{ adjustedFOV, 10.f };
 	rightConePointAdjustments.Normalize();
 
 	m_LeftConeAngleDifference = AngleBetween(guardLookingVector, leftConePointAdjustments);
@@ -165,13 +170,13 @@ void AgentManager::UpdateGuard(float deltaTime)
 
 	// Adjust steering
 	// ---------------
-	m_pGuardSeekingBehavior->SetTarget(m_pPlayerAgent->GetPosition());
 
 	// If Player visible, follow Player
 	const bool playerInCone{ Elite::PointInTriangle(m_pPlayerAgent->GetPosition(), guardPos, m_LeftConePoint, m_RightConePoint) };
 	if (playerInCone)
 	{
 		// Change Guard Variables
+		m_pGuardSeekingBehavior->SetTarget(m_pPlayerAgent->GetPosition());
 		m_pGuardAgent->SetSteeringBehavior(m_pGuardSeekingBehavior);
 		m_pGuardAgent->SetAutoOrient(true);
 
@@ -185,6 +190,10 @@ void AgentManager::UpdateGuard(float deltaTime)
 	else if (m_HasSeenPlayerAlready)
 	{
 		// Change Guard Variables
+		m_pGuardSeekingBehavior->SetTarget(m_GuardTarget);
+		m_pGuardAgent->SetSteeringBehavior(m_pGuardSeekingBehavior);
+		m_pGuardAgent->SetAutoOrient(true);
+
 		m_pGuardAgent->SetBodyColor(m_GuardAlertColor);
 
 		// Change Bools

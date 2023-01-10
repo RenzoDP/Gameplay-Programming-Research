@@ -25,8 +25,9 @@ public:
 	void Render(float deltaTime);
 
 	// Getters/Setters
-	void SetTarget(const Elite::Vector2& newTarget);
-	
+	void SetPlayerTarget(const Elite::Vector2& newTarget);
+	void SetGuardTarget(const Elite::Vector2& newTarget);
+
 	bool GetHasLostPlayer() const;
 	Elite::Vector2 GetPlayerPos() const;
 	Elite::Vector2 GetPlayerVelocity() const;
@@ -42,7 +43,7 @@ private:
 
 	// Player Agent
 	SteeringAgent* m_pPlayerAgent{ nullptr };
-	const float m_MaxPlayerLinearSpeed{ 10.f };
+	const float m_MaxPlayerLinearSpeed{ 15.f };
 	Elite::Vector2 m_PlayerTarget{};
 
 	Seek* m_pPlayerSeekingBehavior{ nullptr };
@@ -51,6 +52,7 @@ private:
 	// Guard Agent
 	SteeringAgent* m_pGuardAgent{ nullptr };
 	const float m_MaxGuardLinearSpeed{ 7.5f };
+	Elite::Vector2 m_GuardTarget{};
 
 	Seek* m_pGuardSeekingBehavior{ nullptr };
 	StandStill* m_pGuardStandStill{ nullptr };
@@ -62,7 +64,8 @@ private:
 	float m_LeftConeAngleDifference{};
 	float m_RightConeAngleDifference{};
 
-	float m_ConeLength{};
+	const float m_ConeLength{25.f};
+	const float m_FOV{ 45.f };
 
 	// Guard Colors
 	const Elite::Color m_GuardNeutralColor{ 0,1.f,0 };
