@@ -27,8 +27,20 @@ namespace Elite
 		float GetPropagationInterval() const { return m_PropagationInterval; }
 		void SetPropagationInterval(float propagationInterval) { m_PropagationInterval = propagationInterval; }
 
-		void SetChangedGraph(bool changedGraph) { m_ChangedGraph = changedGraph; };
+		std::vector<Elite::InfluenceNode*> GetBlockedNodes() const { return m_BlockedNodes; };
 		void SetBlockedNodes(std::vector<Elite::InfluenceNode*> blockedNodes) { m_BlockedNodes = blockedNodes; };
+
+		bool GetShouldEndAlgorithm() const { return m_ShouldEndAlgorithm; };
+		void SetShouldEndAlgorithm(bool shouldEndAlgorithm) { m_ShouldEndAlgorithm = shouldEndAlgorithm; };
+
+		float GetMaxHeat() const { return m_MaxHeat / 20.f; };
+		void SetMaxHeat(float maxHeat) { m_MaxHeat = maxHeat * 20.f; };
+
+		float GetMaxAmountOfHeatedCells() const { return m_MaxAmountOfHeatedCells / 30.f; };
+		void SetMaxAmountOfHeatedCells(float maxAmountOfHeatedCells) { m_MaxAmountOfHeatedCells = int(maxAmountOfHeatedCells * 30.f); };
+
+		float GetMaxPropagationSteps() const { return m_MaxPropagationSteps / 30.f; };
+		void SetMaxPropagationSteps(float maxPropagationSteps) { m_MaxPropagationSteps = int(maxPropagationSteps * 30.f); };
 
 	protected:
 		virtual void OnGraphModified(bool nrOfNodesChanged, bool nrOfConnectionsChanged) override;
@@ -37,8 +49,6 @@ namespace Elite
 		Elite::Color m_NegativeColor{ 1.f, 0.2f, 0.f};
 		Elite::Color m_NeutralColor{ 0.3f, 0.3f, 0.3f };
 		Elite::Color m_PositiveColor{ 0.f, 0.2f, 1.f};
-
-		float m_MaxAbsInfluence = 100.f;
 
 		float m_Momentum = 0.8f; // a higher momentum means a higher tendency to retain the current influence
 		float m_Decay = 0.1f; // determines the decay in influence over distance
@@ -49,10 +59,14 @@ namespace Elite
 		std::vector<float> m_InfluenceDoubleBuffer;
 
 		// Own Stuff
-		bool m_ChangedGraph{ false };
-		Elite::Color m_SeparatedColor{ 0.7f,0.7f,0.7f };
-
 		std::vector<Elite::InfluenceNode*> m_BlockedNodes{};
+
+		bool m_ShouldEndAlgorithm{ false };
+		int m_CurrentPropagationSteps{};
+
+		float m_MaxHeat{ 9.f };
+		int m_MaxAmountOfHeatedCells{ 15 };
+		int m_MaxPropagationSteps{ 20 };
 	};
 
 	template <class T_GraphType>
@@ -64,14 +78,34 @@ namespace Elite
 		{
 			m_TimeSinceLastPropagation -= m_PropagationInterval;
 
-			// Clear buffer
-			m_InfluenceDoubleBuffer.clear();
+			// Plus PropagationSteps
+			if (m_ShouldEndAlgorithm)
+			{
+				m_CurrentPropagationSteps = 0;
+			}
+			else
+			{
+				++m_CurrentPropagationSteps;
+			}
 
-			// Loop over the nodes
+			// Remove Connections off blockedNodes
+			for (const auto& currentBlockedNode : m_BlockedNodes)
+			{
+				RemoveConnectionsToAdjacentNodes(currentBlockedNode->GetIndex());
+			}
+
+			// Keep count of cellsHeated
+			int cellsHeated{};
+
+			// Loop over the Nodes
 			for (const auto& currentNode : m_Nodes)
 			{
-				float highestInfluence{};
-				float connectionCostFromHighestInfluenceNode{};
+				const bool isCold{ currentNode->GetInfluence() <= 0.f };			
+
+				// Check if Neighbor is Heated or Blocked
+				// --------------------------------------
+
+				bool neighborIsHeated{ false };
 
 				// Loop over the connections from currentNode
 				const auto nodeConnections{ GetNodeConnections(currentNode) };
@@ -80,42 +114,59 @@ namespace Elite
 					const auto getToNode{ GetNode(currentConnection->GetTo()) };
 					const float toNodeInfluence{ getToNode->GetInfluence() };
 
-					// If influence from node is higher then highest one, replace
-					if (abs(toNodeInfluence) > abs(highestInfluence))
+					// Check if Neighbor has maxInfluence (= Heated)
+					const bool isHeated{ toNodeInfluence >= m_MaxHeat };
+					if (isHeated)
 					{
-						highestInfluence = toNodeInfluence;
-						connectionCostFromHighestInfluenceNode = currentConnection->GetCost();
+						neighborIsHeated = true;
+						break;
 					}
 				}
 
-				// Apply formula
-				const float newInfluence{ highestInfluence * expf(-connectionCostFromHighestInfluenceNode * m_Decay) };
-				float desiredInfluence{ Lerp(currentNode->GetInfluence(), newInfluence, m_Momentum) };
+				// Calculate desiredHeat
+				// ---------------------
+				float desiredHeat{};
 				
-				// If influence is more then max, clamp
-				if (m_MaxAbsInfluence < abs(desiredInfluence))
+				// If currentNode hasn't been effected yet, put on maxHeat
+				if (isCold && neighborIsHeated && m_ShouldEndAlgorithm == false)
 				{
-					// Clamp to either negative or positive maxInfluence
-					if (desiredInfluence < 0)
-					{
-						desiredInfluence = -m_MaxAbsInfluence;
-					}
-					else
-					{
-						desiredInfluence = m_MaxAbsInfluence;
-					}
+					desiredHeat = m_MaxHeat;
+					++cellsHeated;
+				}
+				// If have been effected already, lower Influence
+				else if (isCold == false)
+				{
+					const float currentNodeInfluence{ currentNode->GetInfluence() };
+					desiredHeat = currentNodeInfluence - 1;
+					desiredHeat =Elite::Clamp(desiredHeat, 0.f, m_MaxHeat);
 				}
 
-				// Put in buffer
-				m_InfluenceDoubleBuffer.push_back(desiredInfluence);
+				// Put in Buffer
+				// -------------
+				m_InfluenceDoubleBuffer[currentNode->GetIndex()] = desiredHeat;
 			}
 
+			// Re-Add Connections off blockedNodes
+			for (const auto& currentBlockedNode : m_BlockedNodes)
+			{
+				AddConnectionsToAdjacentCells(currentBlockedNode->GetIndex());
+			}
 
 			// Loop over the nodes
 			for (size_t idx{}; idx < m_Nodes.size(); ++idx)
 			{
 				// Set Influence
 				m_Nodes[idx]->SetInfluence(m_InfluenceDoubleBuffer[idx]);
+			}
+
+			// Check if should stop Algorithm
+			const bool maxHeatedCellsReached{ cellsHeated >= m_MaxAmountOfHeatedCells };
+			const bool maxPropagationStepsReached{ m_CurrentPropagationSteps >= m_MaxPropagationSteps };
+			const bool noMoreCellsToHeat{ cellsHeated == 0 };
+
+			if (maxPropagationStepsReached || maxHeatedCellsReached || noMoreCellsToHeat)
+			{
+				m_ShouldEndAlgorithm = true;
 			}
 		}
 	}
@@ -151,7 +202,7 @@ namespace Elite
 
 			Color nodeColor{};
 			float influence = pNode->GetInfluence();
-			float relativeInfluence = abs(influence) / m_MaxAbsInfluence;
+			float relativeInfluence = abs(influence) / m_MaxHeat;
 
 			if (influence < 0)
 			{
@@ -172,23 +223,14 @@ namespace Elite
 
 			pNode->SetColor(nodeColor);
 		}
-
-		//// If Graph wasn't changed, return
-		//if (m_ChangedGraph == false) return;
-
-		//// Else, change Color of separate Nodes
-		//for (size_t nodeIdx{}; nodeIdx < m_Nodes.size(); ++nodeIdx)
-		//{
-		//	const auto nodeConnections{ m_Connections[nodeIdx] };
-		//	
-		//	// If no connections, change Color
-		//	const bool hasNoConnections
-		//}
 	}
 
 	template<class T_GraphType>
 	inline void InfluenceMap<T_GraphType>::OnGraphModified(bool nrOfNodesChanged, bool nrOfConnectionsChanged)
 	{
-		InitializeBuffer();
+		if (nrOfConnectionsChanged == 0)
+		{
+			InitializeBuffer();
+		}
 	}
 }
