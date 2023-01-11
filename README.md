@@ -9,5 +9,9 @@
 <p><video controls="" width="100%">
         <source src="https://media.giphy.com/media/f3hA0Emh7XfoS0Aknk/giphy.mp4" type="video/mp4"></video></p>
 <p><br></p>
-<p><br></p>
+<ul>
+    <li style="text-align: left;"><span style="font-size: 24px;">Design</span></li>
+</ul>
+<p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span></p>
+<p><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
 <p><br></p>
