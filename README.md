@@ -59,6 +59,13 @@ There are a few conditions that stop the algorithm, them being:
 This value controls how long the algorithm will run when it reaches an open space.
 When the new set positive nodes exceeds the limit in a propagation step, the algorithm stops.
 
+   ![LowHeatedCells](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/LowHeatedCells.gif)
+  - Low maximum amount of positive nodes
+
+   ![HighHeatedCells](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/HighHeatedCells.gif)
+  - High maximum amount of positive nodes
+
+
 
 * *Reaching the maximum amount of propagation steps*
 This value controls how long the algorithm will run for alltogether.
