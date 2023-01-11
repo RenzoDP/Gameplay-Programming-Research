@@ -37,6 +37,7 @@ To setup the first couple of blockade-nodes, it will have to get the node the pl
 All the nodes that are connected to it and are behind the player's last known velocity-direction will turn into a blockade-node.
 After setting up the blockade, the player's last known node will emit a positive influence.
 
+![SettingFirstBlockade](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/SetBlockade.png)
 
 **The third step is propagating the blockade and the influence**
 
