@@ -43,4 +43,5 @@
     <li style="text-align: left;"><span style="font-size: 24px;">Result</span></li>
 </ul>
 <p><span style="font-size: 16px;">The result of taking all the steps is an influence map that predicts where the player could have run off to,</span><br><span style="font-size: 16px;">after being perceived by the AI.</span></p>
-<p><span style="font-size: 16px;">How the AI handles this data is totally up to the designer.</span><br><span style="font-size: 16px;">The AI could for example;</span><br><span style="font-size: 16px;">simply follow the positive nodes towards the player, it could throw an attack that envelops the area behind the player, ...</span><br><span style="font-size: 16px;">The possibilities are endless.<br></span></p>
+<p><span style="font-size: 16px;">How the AI handles this data is totally up to the designer.</span><br><span style="font-size: 16px;">The AI could for example;</span><br><span style="font-size: 16px;">simply follow the positive nodes towards the player, it could throw an attack that envelops the area behind the player, ...</span><br><span style="font-size: 16px;">The possibilities are endless.</span></p>
+<p><span style="font-size: 16px;">But be wary though, the algorithm doesn&apos;t come without it&apos;s holes.<br></span></p>
