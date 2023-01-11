@@ -1,4 +1,4 @@
-<p style="text-align: center;"><strong><span style="font-size: 36px;">Flooding the Influence map for chase</span></strong></p>
+<p style="text-align: center;"><strong><span style="font-size: 60px;">Flooding the Influence map for chase</span></strong></p>
 <p style="text-align: left;"><br></p>
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Description</span></li>
