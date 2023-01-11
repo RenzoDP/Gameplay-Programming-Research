@@ -43,6 +43,10 @@
     <li style="text-align: left;"><span style="font-size: 24px;">Result</span></li>
 </ul>
 <p><span style="font-size: 16px;">The result of taking all the steps is an influence map that predicts where the player could have run off to,</span><br><span style="font-size: 16px;">after being perceived by the AI.</span></p>
-<p><span style="font-size: 16px;">How the AI handles this data is totally up to the designer.</span><br><span style="font-size: 16px;">The AI could for example;</span><span style="font-size: 16px;">&nbsp;follow the positive nodes towards the player,</span><br><span style="font-size: 16px;">it could throw an attack that envelops the area behind the player, ...</span><br><span style="font-size: 16px;">The possibilities are endless.</span></p>
+<p><span style="font-size: 16px;">How the AI handles this data is totally up to the designer.</span><br><span style="font-size: 16px;">The AI could for example;&nbsp;follow the positive nodes towards the player,</span><br><span style="font-size: 16px;">it could throw an attack that envelops the area behind the player, ...</span><br><span style="font-size: 16px;">The possibilities are endless.</span></p>
 <p>A thing the player could do to counter-act this behavior without getting caught, is simply hiding.<br>While the guard runs towards the area he thinks the player ran off to,<br>the player could be laughing his butt off watching the guard run past him while he&apos;s hiding behind a bush.</p>
-<p>While allowing many fun experiences, the algorithm doesn&apos;t come without it&apos;s holes.<span style="font-size: 16px;"><br></span></p>
+<p>While allowing many fun experiences, the algorithm doesn&apos;t come without it&apos;s holes.</p>
+<p><br></p>
+<ul>
+    <li style="text-align: left;"><span style="font-size: 24px;">Conclusion</span></li>
+</ul>
