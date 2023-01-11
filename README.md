@@ -26,6 +26,6 @@
 <p><br></p>
 <p><strong>The last and fourth step is limiting your algorithm</strong></p>
 <p>This is needed so that the algorithm doesn&apos;t run forever.<br>There are a few conditions that stop the algorithm, them being:</p>
-<p><em>Reaching the maximum amount of positive nodes in a frame</em><br>This value controls how long the algorithm will run when it reaches an open space.</p>
+<p><em>Reaching the maximum amount of positive nodes in a propagation step</em><br>This value controls how long the algorithm will run when it reaches an open space.<br>When the new set positive nodes exceeds the limit in a propagation step, the algorithm stops.</p>
 <p><br></p>
-<p><em>Reaching the maximum amount of propagation steps</em><br><br></p>
+<p><em>Reaching the maximum amount of propagation steps</em><br>This value controls how long the algorithm will run for alltogether.<br>The algorithm remembers how many steps it has set since it&apos;s beginning.<br>When the current propagation steps exceeds the max amount, the algorithm stops.</p>
