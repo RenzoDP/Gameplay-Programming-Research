@@ -48,6 +48,7 @@ All other nodes decrease their influence by a constant value.
 The blockade-nodes on the other hand spread themselves out like a virus.
 Every node that's connected to a blockade-node and is behind the player's last known velocity-direction, also become a blockade-node.
 
+![PropagatingInfluence](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/InfluencePropagation.gif)
 
 **The last and fourth step is limiting your algorithm**
 
