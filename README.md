@@ -99,13 +99,18 @@ It controls how long the positive nodes will linger after being put to max influ
    - Low max heat
    
    ![HighMaxHeat](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/HighHeat.gif)
-
+   - High max heat
 
 
 *Propagation Interval*
 
 This value controls how long it will take before another propagation step gets taken.
 
+   ![LowPropagationInterval](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/LowPropagationInterval.gif)
+   - Low propagation interval
+
+   ![HighPropagationInterval](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/HighPropagationInterval.gif)
+   - High propagation interval
 
 ## Result
 
