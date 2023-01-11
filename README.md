@@ -50,4 +50,4 @@
 <ul>
     <li><span style="font-size: 24px;">Conclusion</span></li>
 </ul>
-<p><span style="font-size: 16px;">In conclusion, this chasing algorithm is great for creating an enjoyable and relatively fair chasing sequence for the player in closed off areas.</span><br><span style="font-size: 16px;">Having an AI that seemingly guesses where the player could&apos;ve ran of to <br></span></p>
+<p><span style="font-size: 16px;">In conclusion, this chasing algorithm is great for creating an enjoyable and relatively fair chasing sequence for the player in closed off areas.</span><br><span style="font-size: 16px;">And in my opinion, having</span> an AI that seemingly guesses where the player could&apos;ve ran off to is more in par with </p>
