@@ -18,4 +18,4 @@
 <p>The AI has to be able to see the player and get it&apos;s velocity-direction before any other part of the algorithm can work.<br>When the player leaves the AI&apos;s FOV, the algorithm can start.<br>The last known player&apos;s position and velocity-direction are stored for further use in the algorithm.</p>
 <p><br></p>
 <p><strong>The second step is putting up the first blockade and setting the influence<br></strong></p>
-<p>To setup the first couple of blockade-nodes, you will have to get the node the player was last seen on.<br>All the nodes that are connected to it and are behind the player&apos;s last known velocity-direction.</p>
+<p>To setup the first couple of blockade-nodes, it will have to get the node the player was last seen on.<br>All the nodes that are connected to it and are behind the player&apos;s last known velocity-direction will turn into a blockade-node.<br>After setting up the blockade, the player&apos;s last known node will emit a positive influence.</p>
