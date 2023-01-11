@@ -128,6 +128,7 @@ the player could be laughing his butt off watching the guard run past him while 
 
 While allowing many fun experiences, the algorithm doesn't come without it's holes.
 
+![Holes](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/Holes.gif)
 
 ## Conclusion
 
