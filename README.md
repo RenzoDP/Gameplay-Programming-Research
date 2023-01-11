@@ -19,3 +19,6 @@
 <p><br></p>
 <p><strong>The second step is putting up the first blockade and setting the influence<br></strong></p>
 <p>To setup the first couple of blockade-nodes, it will have to get the node the player was last seen on.<br>All the nodes that are connected to it and are behind the player&apos;s last known velocity-direction will turn into a blockade-node.<br>After setting up the blockade, the player&apos;s last known node will emit a positive influence.</p>
+<p><br></p>
+<p><strong>The third step is propagating the blockade and the influence</strong></p>
+<p>The positive influence emits itself in a wave-like manner. <strong><br></strong></p>
