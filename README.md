@@ -21,4 +21,4 @@
 <p>To setup the first couple of blockade-nodes, it will have to get the node the player was last seen on.<br>All the nodes that are connected to it and are behind the player&apos;s last known velocity-direction will turn into a blockade-node.<br>After setting up the blockade, the player&apos;s last known node will emit a positive influence.</p>
 <p><br></p>
 <p><strong>The third step is propagating the blockade and the influence</strong></p>
-<p>The positive influence emits itself in a wave-like manner. <strong><br></strong></p>
+<p>The positive influence emits itself in a wave-like manner.<br>All the nodes connected to a node that&apos;s on the max influence amount<strong>&nbsp;</strong>and aren&apos;t part of the blockade-nodes, emit the max influence amount.<br>All other nodes decrease their influence by a constant value.</p>
