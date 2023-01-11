@@ -1,4 +1,12 @@
 #pragma once
+//--- Includes and Forward Declarations ---
+#include "projects/Movement/SteeringBehaviors/SteeringHelpers.h"
+#include "framework\EliteAI\EliteGraphs\EInfluenceMap.h"
+#include "framework\EliteAI\EliteGraphs\EGraph2D.h"
+#include "framework\EliteAI\EliteGraphs\EGridGraph.h"
+#include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphEditor.h"
+#include "framework\EliteAI\EliteGraphs\EliteGraphUtilities\EGraphRenderer.h"
+
 #include "projects/Movement/SteeringBehaviors/SteeringAgent.h"
 #include "projects/Movement/SteeringBehaviors/Steering/SteeringBehaviors.h"
 
@@ -6,12 +14,19 @@ namespace Elite
 {
 	class NavGraph;
 }
+using InfluenceGrid = Elite::GridGraph<Elite::InfluenceNode, Elite::GraphConnection>;
 
 class AgentManager final
 {
 public:
+	// Enum
+	enum GuardBehavior
+	{
+		OnGuard, Chasing, Alert
+	};
+
 	// Constructor and Destructor
-	explicit AgentManager(const std::vector<Elite::Vector2>& worldMaxima);
+	explicit AgentManager(Elite::InfluenceMap<InfluenceGrid>* pInfluenceGrid, const std::vector<Elite::Vector2>& worldMaxima);
 	~AgentManager();
 
 	// Rule of Five
@@ -21,7 +36,7 @@ public:
 	AgentManager& operator=(AgentManager&&) = delete;
 	
 	// Public Functions
-	void Update(float deltaTime);
+	void Update(float deltaTime, bool algorithmIsBusy);
 	void Render(float deltaTime);
 
 	// Getters/Setters
@@ -32,14 +47,21 @@ public:
 	Elite::Vector2 GetPlayerPos() const;
 	Elite::Vector2 GetPlayerVelocity() const;
 
+	GuardBehavior GetCurrentGuardBehavior() const;
 
 private:
 
 	// Variables
 	// =========
 
+	// InfluenceGrid
+	// -------------
+	Elite::InfluenceMap<InfluenceGrid>* m_pInfluenceGrid{ nullptr };
+
+
 	// Agents
 	// --------
+	StandStill* m_pStandStillBehavior{ nullptr };
 
 	// Player Agent
 	SteeringAgent* m_pPlayerAgent{ nullptr };
@@ -49,13 +71,17 @@ private:
 	Seek* m_pPlayerSeekingBehavior{ nullptr };
 	Arrive* m_pPlayerArriveBehavior{ nullptr };
 
+	std::vector<Elite::InfluenceNode*> m_vPlayerPath{};
+
 	// Guard Agent
 	SteeringAgent* m_pGuardAgent{ nullptr };
 	const float m_MaxGuardLinearSpeed{ 7.5f };
 	Elite::Vector2 m_GuardTarget{};
 
+	GuardBehavior m_CurrentGuardBehavior{ OnGuard };
 	Seek* m_pGuardSeekingBehavior{ nullptr };
-	StandStill* m_pGuardStandStill{ nullptr };
+
+	std::vector<Elite::InfluenceNode*> m_vGuardPath{};
 
 	// Cone
 	Elite::Vector2 m_LeftConePoint{};
@@ -82,9 +108,12 @@ private:
 	// Functions
 	// =========
 
-	void InitializeAgents();
+	void InitializeAgents(const std::vector<Elite::Vector2>& worldMaxima);
 
 	void UpdatePlayer(float deltaTime);
-	void UpdateGuard(float deltaTime);
+	void UpdateGuard(float deltaTime, bool algorithmIsBusy);
+
+	void CalculatePath(const Elite::Vector2& startPos, const Elite::Vector2& endPos, std::vector<Elite::InfluenceNode*>& path, bool isPlayer);
+	void FollowPath(SteeringAgent* pAgent, ISteeringBehavior* pSeekingBehavior, ISteeringBehavior* pArriveBehavior, std::vector<Elite::InfluenceNode*>& path);
 };
 

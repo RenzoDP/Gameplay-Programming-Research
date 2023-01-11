@@ -10,7 +10,7 @@ InfluenceChasing::InfluenceChasing(Elite::InfluenceMap<InfluenceGrid>* pInfluenc
 								   int cellAmount, int cellSize, bool isDirectionalGraph, bool isConnectedDiagonally)
 	: m_pInfluenceGrid{pInfluenceGrid}
 {
-	m_pAgentManager = new AgentManager(worldMaxima);
+	m_pAgentManager = new AgentManager(pInfluenceGrid, worldMaxima);
 
 	m_pChasingAlgorithm = new ChasingAlgorithm(cellAmount, cellSize, isDirectionalGraph, isConnectedDiagonally);
 }
@@ -159,14 +159,15 @@ void InfluenceChasing::HandleAgents(float deltaTime)
 	// ----------------------------------------------------
 	const bool hasLostPlayer{ m_pAgentManager->GetHasLostPlayer() };
 	const bool statusHasChanged{ hasLostPlayer != m_HasLostPlayer };
+	const AgentManager::GuardBehavior currentGuardBehavior{ m_pAgentManager->GetCurrentGuardBehavior() };
 
-	if (statusHasChanged && hasLostPlayer)
+	if (currentGuardBehavior == AgentManager::Chasing && statusHasChanged)
 	{
 		// Start Algorithm
 		m_pChasingAlgorithm->StartAlgorithm(m_pAgentManager->GetPlayerPos(), m_pAgentManager->GetPlayerVelocity());
 	}
 	// If Player was found, reset
-	else if(statusHasChanged && hasLostPlayer == false)
+	else if(currentGuardBehavior == AgentManager::OnGuard && statusHasChanged)
 	{
 		// Stop Algorithm
 		m_pChasingAlgorithm->StopAlgorithm();
@@ -174,31 +175,67 @@ void InfluenceChasing::HandleAgents(float deltaTime)
 
 	m_HasLostPlayer = hasLostPlayer;
 
-	//// Calculate GuardTarget if started
-	//// --------------------------------
+	// Calculate GuardTarget if started
+	// --------------------------------
 
-	//if (m_pChasingAlgorithm->GetStartedAlgorithm())
-	//{
-	//	// Get all maxInfluence Nodes
-	//	std::vector<Elite::InfluenceNode*> maxInfluenceNodes{};
-	//
-	//	// Loop through all nodes
-	//	for (const auto& currentNode : m_pChasingAlgorithm->GetInfluenceGrid()->GetAllNodes())
-	//	{
-	//		// If is maxInfluence, push back
-	//		const bool isMaxInfluence{ currentNode->GetInfluence() == 9.f };
-	//		if (isMaxInfluence)
-	//		{
-	//			maxInfluenceNodes.push_back(currentNode);
-	//		}
-	//	}
+	if (m_pChasingAlgorithm->GetStartedAlgorithm())
+	{
+		// Get all Nodes
+		const auto pInfluenceGrid{ m_pChasingAlgorithm->GetInfluenceGrid() };
+		const auto allNodes{ pInfluenceGrid->GetAllNodes() };
 
-	//	// Get Average
-	//}
+		// Weighter Average Position
+		Elite::Vector2 weightedAveragePosition{};
+		std::vector<Elite::Vector2> heatedNodesPos{};
+
+		// Loop through all nodes
+		for (const auto& currentNode : allNodes)
+		{
+			// Heat counts as Weight
+			const float currentHeat{ currentNode->GetInfluence() };
+
+			if (currentHeat != 0.f)
+			{
+				Elite::Vector2 currentPosition{ pInfluenceGrid->GetNodeWorldPos(currentNode) };
+				weightedAveragePosition += currentHeat * currentPosition;
+
+				heatedNodesPos.push_back(currentPosition);
+			}
+		}
+
+		// Calculate Average
+		weightedAveragePosition /= static_cast<float>(heatedNodesPos.size());
+
+		// Set Pos to nearest heatedNode, if current averagePos isn't valid
+		const bool averagePosNotValid{ m_pInfluenceGrid->GetNodeIdxAtWorldPos(weightedAveragePosition) == invalid_node_index };
+		if (averagePosNotValid)
+		{
+			float closestDistance{ FLT_MAX };
+			Elite::Vector2 closestPos{};
+
+			for (const auto& currentPos : heatedNodesPos)
+			{
+				// If currentDistance is closer, is new closest
+				const float currentDistance{ (currentPos - weightedAveragePosition).MagnitudeSquared() };
+				if (currentDistance < closestDistance)
+				{
+					closestDistance = currentDistance;
+					closestPos = currentPos;
+				}
+			}
+
+			// Set pos to closest heatedCell
+			weightedAveragePosition = closestPos;
+		}
+	
+
+		// Set guardTarget
+		m_pAgentManager->SetGuardTarget(weightedAveragePosition);
+	}
 
 	// Update Manager
 	// --------------
-	m_pAgentManager->Update(deltaTime);
+	m_pAgentManager->Update(deltaTime, m_pChasingAlgorithm->GetStartedAlgorithm());
 }
 
 void InfluenceChasing::SetMouseTarget(Elite::InputMouseButton mouseBtn)
