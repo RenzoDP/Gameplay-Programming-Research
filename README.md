@@ -12,6 +12,6 @@
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Design</span></li>
 </ul>
-<p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span></p>
-<p><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
-<p><strong>The first step is the actual perceiving of the player and getting it&apos;s information.</strong><br>The AI has to be able to see the player and get it&apos;s velocity before any other part of the algorithm can work.<br>When the player leaves the AI&apos;s FOV, the algorithm can start.<br>The last known player&apos;s position and velocity are stored for further use in the algorithm.</p>
+<p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span><br><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
+<p><strong>The first step is the actual perceiving of the player and getting it&apos;s information.</strong></p>
+<p>The AI has to be able to see the player and get it&apos;s velocity before any other part of the algorithm can work.<br>When the player leaves the AI&apos;s FOV, the algorithm can start.<br>The last known player&apos;s position and velocity are stored for further use in the algorithm.</p>
