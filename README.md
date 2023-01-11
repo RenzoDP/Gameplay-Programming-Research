@@ -31,3 +31,11 @@
 <p><em>Reaching the maximum amount of propagation steps</em><br>This value controls how long the algorithm will run for alltogether.<br>The algorithm remembers how many steps it has set since it&apos;s beginning.<br>When the current propagation steps exceeds the max amount, the algorithm stops.</p>
 <p><br></p>
 <p><em>Having no more nodes to emit positive influence to left</em><br>When the algorithm reaches a point where it can&apos;t spread it&apos;s positive influence anymore, it stops.</p>
+<p><br></p>
+<p><u><strong>Adding other settings</strong></u></p>
+<p>It&apos;s also possible to add in more settings into your algorithm.<br>Some of the custom settings my version of the algorithm has are:</p>
+<p><br></p>
+<p><em>Max Heat</em><br>This value controls what the maximum influence is that a node can be.<br>It controls how long the positive nodes will linger after being put to max influence.</p>
+<p><br></p>
+<p><em>Propagation Interval</em><br>This value controls how long it will take before another propagation step gets taken.</p>
+<p><br></p>
