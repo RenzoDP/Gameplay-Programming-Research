@@ -25,5 +25,7 @@
 <p>The blockade-nodes on the other hand spread themselves out like a virus.<br>Every node that&apos;s connected to a blockade-node and is behind the player&apos;s last known velocity-direction, also become a blockade-node.</p>
 <p><br></p>
 <p><strong>The last and fourth step is limiting your algorithm</strong></p>
-<p>This is needed so that the algorithm doesn&apos;t run forever.</p>
-<p>There are a few conditions that stop the algorithm, them being:<br>- Reaching the maximum amount of positive nodes in a frame.</p>
+<p>This is needed so that the algorithm doesn&apos;t run forever.<br>There are a few conditions that stop the algorithm, them being:</p>
+<p><em>Reaching the maximum amount of positive nodes in a frame</em><br>This value controls how long the algorithm will run when it reaches an open space.</p>
+<p><br></p>
+<p><em>Reaching the maximum amount of propagation steps</em><br><br></p>
