@@ -48,5 +48,5 @@
 <p>While allowing many fun experiences, the algorithm doesn&apos;t come without it&apos;s holes.</p>
 <p><br></p>
 <ul>
-    <li style="text-align: left;"><span style="font-size: 24px;">Conclusion</span></li>
+    <li><span style="font-size: 24px;">Conclusion</span></li>
 </ul>
