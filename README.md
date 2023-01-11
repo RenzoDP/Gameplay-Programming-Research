@@ -1,4 +1,6 @@
 <p style="text-align: center;"><strong><span style="font-size: 60px;">Flooding the Influence map for chase</span></strong></p>
+<hr>
+<p><br></p>
 <p style="text-align: left;"><br></p>
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Description</span></li>
@@ -6,7 +8,7 @@
 <p>Most stealth-based games in the current industry make use of an AI that seems to be all-knowing.<br>For example; I&apos;m sure you ever came across the situation where you were sneaking around the enemies&apos; base gathering intel,<br>until suddenly a guard came across you. You tried to get away, but the AI seamingly seemed to know your every move, making it rather impossible to get away.</p>
 <p>That&apos;s what this algorithm is trying to avoid, while still creating a thrilling chase sequence.</p>
 <p>This is created using a variant of the Influence map algorithm.<br>It&apos;s splits up the propagating influence between a positive influence your guard AI want&apos;s follow<br>and an influence one that blocks of the former one.</p>
-![ResultGif](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/Result.gif)
+
 <p><br></p>
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Design</span></li>
@@ -37,6 +39,7 @@
 <p><em>Max Heat</em><br>This value controls what the maximum influence is that a node can be.<br>It controls how long the positive nodes will linger after being put to max influence.</p>
 <p><br></p>
 <p><em>Propagation Interval</em><br>This value controls how long it will take before another propagation step gets taken.</p>
+<hr>
 <p><br></p>
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Result</span></li>
@@ -45,15 +48,19 @@
 <p><span style="font-size: 16px;">How the AI handles this data is totally up to the designer.</span><br><span style="font-size: 16px;">The AI could for example;&nbsp;follow the positive nodes towards the player,</span><br><span style="font-size: 16px;">it could throw an attack that envelops the area behind the player, ...</span><br><span style="font-size: 16px;">The possibilities are endless.</span></p>
 <p>A thing the player could do to counter-act this behavior without getting caught, is simply hiding.<br>While the guard runs towards the area he thinks the player ran off to,<br>the player could be laughing his butt off watching the guard run past him while he&apos;s hiding behind a bush.</p>
 <p>While allowing many fun experiences, the algorithm doesn&apos;t come without it&apos;s holes.</p>
+<hr>
+<p><br></p>
 <p><br></p>
 <ul>
     <li><span style="font-size: 24px;">Conclusion</span></li>
 </ul>
 <p><span style="font-size: 16px;">In conclusion, this chasing algorithm is great for when you want to replace your all-knowing AI with a more intuitive one.</span><br><span style="font-size: 16px;">While it&apos;s not really perfect for all situations, it does it&apos;s job at creating an enjoyable chasing sequence.</span></p>
 <p>And after all, isn&apos;t having an AI that seemingly guesses the main fascination of Artificial Intelligence?</p>
+<hr>
 <p><br></p>
 <ul>
     <li><span style="font-size: 24px;">References</span></li>
 </ul>
 <p>Game AI Pro - Online Edition 2021. <a href="http://www.gameaipro.com/GameAIProOnlineEdition2021/GameAIProOnlineEdition2021_Chapter06_Flooding_the_Influence_Map_for_Chase_in_Dishonored_2.pdf">Flooding the Influence Map for Chase in <em>Dishonored 2</em></a>, Laurent Couvidou</p>
 <p><br><br></p>
+<p><br></p>
