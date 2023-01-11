@@ -50,5 +50,5 @@
 <ul>
     <li><span style="font-size: 24px;">Conclusion</span></li>
 </ul>
-<p><span style="font-size: 16px;">In conclusion, this chasing algorithm is great for creating an enjoyable and relatively fair chasing sequence for the player in closed off areas.</span></p>
+<p><span style="font-size: 16px;">In conclusion, this chasing algorithm is great for when you want to replace your all-knowing AI with a more intuitive one.</span><br><span style="font-size: 16px;">While it&apos;s not really perfect for all situations, it does it&apos;s job at creating a enjoyable chasing sequence.</span></p>
 <p>And after all, isn&apos;t having an AI that seemingly guesses the main fascination of Artificial Intelligence?<br><br></p>
