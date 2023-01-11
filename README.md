@@ -12,7 +12,7 @@
 <ul>
     <li style="text-align: left;"><span style="font-size: 24px;">Design</span></li>
 </ul>
-<p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span><br><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
+<p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">The blockade influence is needed so that the positive influence won&apos;t spread behind the player&apos;s last known velocity-direction.</span><br><span style="font-size: 16px;">It normally wouldn&apos;t make sense for the player to run back towards the guard and if he does so, he would be caught anyways.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span><br><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
 <p><br></p>
 <p><strong>The first step is the actual perceiving of the player and getting it&apos;s information</strong></p>
 <p>The AI has to be able to see the player and get it&apos;s velocity-direction before any other part of the algorithm can work.<br>When the player leaves the AI&apos;s FOV, the algorithm can start.<br>The last known player&apos;s position and velocity-direction are stored for further use in the algorithm.</p>
@@ -22,3 +22,4 @@
 <p><br></p>
 <p><strong>The third step is propagating the blockade and the influence</strong></p>
 <p>The positive influence emits itself in a wave-like manner.<br>All the nodes connected to a node that&apos;s on the max influence amount<strong>&nbsp;</strong>and aren&apos;t part of the blockade-nodes, emit the max influence amount.<br>All other nodes decrease their influence by a constant value.</p>
+<p>The blockade-nodes on the other hand spread themselves out like a virus.<br>Every node that&apos;s connected to a blockade-node and is behind the player&apos;s last known velocity-direction, also become a blockade-node.</p>
