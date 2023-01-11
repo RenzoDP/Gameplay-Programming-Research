@@ -29,6 +29,7 @@ The AI has to be able to see the player and get it's velocity-direction before a
 When the player leaves the AI's FOV, the algorithm can start.
 The last known player's position and velocity-direction are stored for further use in the algorithm.
 
+![PerceivingPlayer](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/Vision.png)
 
 **The second step is putting up the first blockade and setting the influence**
 
