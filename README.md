@@ -72,6 +72,13 @@ This value controls how long the algorithm will run for alltogether.
 The algorithm remembers how many steps it has set since it's beginning.
 When the current propagation steps exceeds the max amount, the algorithm stops.
 
+   ![LowPropagationSteps](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/LowPropagationSteps.gif)
+  - Low maximum amount of propagation steps
+
+   ![HighPropagationSteps](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/HighPropagationSteps.gif)
+  - High maximum amount of propagation steps
+
+
 
 + *Having no more nodes to emit positive influence to left*
 When the algorithm reaches a point where it can't spread it's positive influence anymore, it stops.
@@ -87,6 +94,12 @@ Some of the custom settings my version of the algorithm has are:
 
 This value controls what the maximum influence is that a node can be.
 It controls how long the positive nodes will linger after being put to max influence.
+
+   ![LowMaxHeat](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/LowHeat.gif)
+   - Low max heat
+   
+   ![HighMaxHeat](https://github.com/RenzoDP/Gameplay-Programming-Research/blob/AddingGifsToReadMe/Gifs/HighHeat.gif)
+
 
 
 *Propagation Interval*
