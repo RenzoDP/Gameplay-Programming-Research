@@ -135,7 +135,7 @@ While allowing many fun experiences, the algorithm doesn't come without it's hol
 In conclusion, this chasing algorithm is great for when you want to replace your all-knowing AI with a more intuitive one.
 While it's not really perfect for all situations, it does it's job at creating an enjoyable chasing sequence.
 
-And after all, isn't having an AI that seemingly guesses the main fascination of Artificial Intelligence?
+And after all, isn't having an AI that seemingly has the ability to think the main reason lots of people are fascinated with Artificial Intelligence?
 
 
 ## References
