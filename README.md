@@ -4,7 +4,7 @@
 <p>Most stealth-based games in the current industry make use of an AI that seems to be all-knowing.<br>For example; I&apos;m sure you ever came across the situation where you were sneaking around the enemies&apos; base gathering intel,<br>until suddenly a guard came across you. You tried to get away, but the AI seamingly seemed to know your every move, making it rather impossible to get away.</p>
 <p>That&apos;s what this algorithm is trying to avoid, while still creating a thrilling chase sequence.</p>
 <p>This is created using a variant of the Influence map algorithm.<br>It&apos;s splits up the propagating influence between a positive influence your guard AI want&apos;s follow<br>and an influence one that blocks of the former one.</p>
-
+![](https://raw.githubusercontent.com/RenzoDP/Gameplay-Programming-Research/cef3ea08907f321bb2ee4d90f70761aff7b21298/Gifs/Result.gif)
 <hr>
 <p><span style="font-size: 16px;">As stated before, the algorithm consists of two influences: a positive influence and a &quot;blockade&quot; influence.</span><br><span style="font-size: 16px;">The blockade influence is needed so that the positive influence won&apos;t spread behind the player&apos;s last known velocity-direction.</span><br><span style="font-size: 16px;">It normally wouldn&apos;t make sense for the player to run back towards the guard and if he does so, he would be caught anyways.</span><br><span style="font-size: 16px;">These then spread themselves over the map accordingly.&nbsp;</span><br><span style="font-size: 16px;">To achieve this result, the algorithm has to take a few steps.</span></p>
 <p><br></p>
