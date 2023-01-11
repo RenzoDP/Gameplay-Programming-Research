@@ -56,4 +56,5 @@
 <ul>
     <li><span style="font-size: 24px;">References</span></li>
 </ul>
+<p>Game AI Pro - Online Edition 2021. <a href="http://www.gameaipro.com/GameAIProOnlineEdition2021/GameAIProOnlineEdition2021_Chapter06_Flooding_the_Influence_Map_for_Chase_in_Dishonored_2.pdf">Flooding the Influence Map for Chase in <em>Dishonored 2</em></a>, Laurent Couvidou</p>
 <p><br><br></p>
