@@ -23,3 +23,7 @@
 <p><strong>The third step is propagating the blockade and the influence</strong></p>
 <p>The positive influence emits itself in a wave-like manner.<br>All the nodes connected to a node that&apos;s on the max influence amount<strong>&nbsp;</strong>and aren&apos;t part of the blockade-nodes, emit the max influence amount.<br>All other nodes decrease their influence by a constant value.</p>
 <p>The blockade-nodes on the other hand spread themselves out like a virus.<br>Every node that&apos;s connected to a blockade-node and is behind the player&apos;s last known velocity-direction, also become a blockade-node.</p>
+<p><br></p>
+<p><strong>The last and fourth step is limiting your algorithm</strong></p>
+<p>This is needed so that the algorithm doesn&apos;t run forever.</p>
+<p>There are a few conditions that stop the algorithm, them being:<br>- Reaching the maximum amount of positive nodes in a frame.</p>
